@@ -31,6 +31,8 @@ fun buildFIsh(){
     val pleco = Plecostomus()
 
     println("Shark: ${shark.color}")
+    shark.eat()
     println("Plecostomus: ${pleco.color}")
+    pleco.eat()
 
 }
