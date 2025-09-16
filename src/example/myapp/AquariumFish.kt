@@ -7,11 +7,7 @@ class Shark: FishColor, FishAction {
     }
 }
 
-class Plecostomus(fishColor: FishColor = GoldColor):  FishAction, FishColor by fishColor {
-    override fun eat() {
-        println("eat algae")
-    }
-}
+class Plecostomus(fishColor: FishColor = GoldColor):  FishAction by PrintingFishAction("eat algae"), FishColor by fishColor
 
 interface FishAction{
     fun eat()
@@ -33,4 +29,10 @@ interface AquariumAction {
 //Clase que solo se instancia una vez para ahorrar recursos(Supongo) porque siempre hace lo mismo
 object GoldColor : FishColor {
     override val color = "gold"
+}
+
+class  PrintingFishAction(val food: String): FishAction{
+    override fun eat() {
+        println(food)
+    }
 }
