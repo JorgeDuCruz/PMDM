@@ -30,3 +30,8 @@ interface AquariumAction {
         println("swim")
     }
 }
+
+//Clase que solo se instancia una vez para ahorrar recursos(Supongo) porque siempre hace lo mismo
+object GoldColor : FishColor {
+    override val color = "gold"
+}
