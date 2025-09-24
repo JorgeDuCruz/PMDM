@@ -1,5 +1,11 @@
+import java.util.Locale
+import java.util.Locale.getDefault
+import java.util.Scanner
+
 object maquinaCafe {
     public var currentState: maquinaCafeSealed = maquinaCafeSealed.Idle
+    private val sc = Scanner (System.`in`)
+    private var hecho = false
 
     fun ActualizarEstado() {
         println("Estado actual: $currentState")
@@ -10,8 +16,9 @@ object maquinaCafe {
                 MostrarOpciones()
             }
             is maquinaCafeSealed.EligiendoCafe -> {
-                var gustanOpcion = listOf(true, false).random()
-                if (gustanOpcion){
+                println("Te gustan las opciones? [s/n]")
+                var gustanOpcion = sc.next()
+                if ("s" == gustanOpcion.lowercase()){
                     ElegirCafe()
                 }
                 else{
@@ -20,17 +27,24 @@ object maquinaCafe {
 
             }
             is maquinaCafeSealed.HaciendoCafe -> {
-                println("Haciendo cafe")
-                Thread.sleep(200)
-                println("Cafe hecho")
-                var recoger = listOf(true, false).random()
-                if (recoger) {
-                    recogerCafe()
+                if (!hecho){
+                    println("Haciendo cafe")
+                    Thread.sleep(200)
+                    println("Cafe hecho")
+                    hecho = true
+                }else {
+                    println("Café listo. ¿Lo recoges? [s/n]")
+                    var recoger = sc.next()
+                    if ("s" == recoger.lowercase()) {
+                        recogerCafe()
+                    }
                 }
             }
             is maquinaCafeSealed.RecibiendoDinero -> {
-                val dineroSuficiente = listOf(true, false).random()
-                if (dineroSuficiente) {
+                println("Tienes suficiente dinero? [s/n]")
+                var dineroSuficiente = sc.next()
+                println("¿Dinero suficiente? $dineroSuficiente")
+                if ("s" == dineroSuficiente.lowercase()) {
                     pagar()
                 }
                 else{
@@ -44,8 +58,10 @@ object maquinaCafe {
     }
 
     fun ElegirCafe() {
-        val opcioElegida = ((currentState as maquinaCafeSealed.EligiendoCafe).tipoCafe.indices).random()
+        println("Elige una opción (1-4): ")
+        val opcioElegida = sc.nextInt()-1
         val precioCafe = (currentState as maquinaCafeSealed.EligiendoCafe).precio[opcioElegida]
+        println("Café elegido: ${(currentState as maquinaCafeSealed.EligiendoCafe).tipoCafe[opcioElegida]} - Precio: \$$precioCafe")
         currentState = maquinaCafeSealed.RecibiendoDinero(precioCafe)
     }
     fun MostrarOpciones (){
@@ -61,7 +77,8 @@ object maquinaCafe {
     fun pagar() {
         var dineroRecibido = 0.0
         while (dineroRecibido <= (currentState as maquinaCafeSealed.RecibiendoDinero).dinero) {
-            dineroRecibido +=0.01
+            println("Introduce dinero (actual: \$$dineroRecibido) dinero necesario: \$${(currentState as maquinaCafeSealed.RecibiendoDinero).dinero}): ")
+            dineroRecibido += sc.nextDouble()
         }
         currentState = maquinaCafeSealed.HaciendoCafe
     }
