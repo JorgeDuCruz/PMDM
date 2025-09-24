@@ -1,11 +1,9 @@
-import java.util.Locale
-import java.util.Locale.getDefault
 import java.util.Scanner
 
 object maquinaCafe {
     public var currentState: maquinaCafeSealed = maquinaCafeSealed.Idle
     private val sc = Scanner (System.`in`)
-    private var hecho = false
+    var hecho = false
 
     fun ActualizarEstado() {
         println("Estado actual: $currentState")
