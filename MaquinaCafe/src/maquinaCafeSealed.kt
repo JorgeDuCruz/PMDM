@@ -1,4 +1,3 @@
-import maquinaCafe.currentState
 import maquinaCafe.sc
 
 interface ICoffeeMachineState {
@@ -35,7 +34,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             val dineroSuficiente = maquinaCafe.sc.next()
             println("¿Dinero suficiente? $dineroSuficiente")
             if ("s" == dineroSuficiente.lowercase()) {
-                pagar()
+                pagar(dinero)
             } else {
                 CancelarCompra()
             }
@@ -46,7 +45,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             println("Te gustan las opciones? [s/n]")
             val gustanOpcion = maquinaCafe.sc.next()
             if ("s" == gustanOpcion.lowercase()) {
-                ElegirCafe()
+                ElegirCafe(precio,tipoCafe)
             } else {
                 CancelarCompra()
             }
@@ -63,12 +62,13 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
  * Permite al usuario elegir un café de las opciones disponibles.
  * Cambia el estado a `RecibiendoDinero` con el precio del café elegido.
  */
-fun ElegirCafe() {
+fun ElegirCafe(listaPrecios: List<Double>,listaNombres: List<String>) {
     println("Elige una opción (1-4): ")
     val opcioElegida = sc.nextInt() - 1
-    val precioCafe = (currentState as maquinaCafeSealed.EligiendoCafe).precio[opcioElegida]
-    println("Café elegido: ${(currentState as maquinaCafeSealed.EligiendoCafe).tipoCafe[opcioElegida]} - Precio: \$$precioCafe")
-    currentState = maquinaCafeSealed.RecibiendoDinero(precioCafe)
+    val precioCafe = listaPrecios[opcioElegida]
+    val nombreCafe = listaNombres[opcioElegida]
+    println("Café elegido: $nombreCafe - Precio: $precioCafe €")
+    maquinaCafe.setState(maquinaCafeSealed.RecibiendoDinero(precioCafe))
 }
 
 
@@ -83,7 +83,7 @@ fun MostrarOpciones() {
     for (i in tiposCafe.indices) {
         println("${i + 1}. ${tiposCafe[i]} - \$${preciosCafe[i]}")
     }
-    currentState = maquinaCafeSealed.EligiendoCafe(tiposCafe, preciosCafe)
+    maquinaCafe.setState(maquinaCafeSealed.EligiendoCafe(tiposCafe, preciosCafe))
 }
 
 
@@ -91,13 +91,13 @@ fun MostrarOpciones() {
 /**
  * Simula el proceso de pago. Cambia el estado a `HaciendoCafe` una vez que se recibe suficiente dinero.
  */
-fun pagar() {
+fun pagar(precio : Double) {
     var dineroRecibido = 0.0
-    while (dineroRecibido <= (currentState as maquinaCafeSealed.RecibiendoDinero).dinero) {
-        println("Introduce dinero (actual: \$$dineroRecibido) dinero necesario: \$${(currentState as maquinaCafeSealed.RecibiendoDinero).dinero}): ")
+    while (dineroRecibido <= precio) {
+        println("Introduce dinero (actual: \$$dineroRecibido dinero necesario: $precio): ")
         dineroRecibido += sc.nextDouble()
     }
-    currentState = maquinaCafeSealed.HaciendoCafe
+    maquinaCafe.setState(maquinaCafeSealed.HaciendoCafe)
 }
 
 
@@ -107,7 +107,7 @@ fun pagar() {
  */
 fun recogerCafe() {
     println("Cafe recogido")
-    currentState = maquinaCafeSealed.LimpiandoMaquina
+    maquinaCafe.setState(maquinaCafeSealed.LimpiandoMaquina)
     clean()
 }
 
@@ -117,8 +117,7 @@ fun recogerCafe() {
  */
 fun clean() {
     println("Limpiando la máquina...")
-    currentState = maquinaCafeSealed.Idle
-    println("Máquina limpia. Estado: $currentState")
+    maquinaCafe.setState(maquinaCafeSealed.Idle)
 }
 
 
@@ -127,5 +126,5 @@ fun clean() {
  */
 fun CancelarCompra() {
     println("Compra cancelada. Volviendo a estado Idle.")
-    currentState = maquinaCafeSealed.Idle
+    maquinaCafe.setState(maquinaCafeSealed.Idle)
 }
