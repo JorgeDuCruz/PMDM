@@ -40,4 +40,8 @@ object maquinaCafe {
             else -> false
         }
     }
+
+    fun getState(): maquinaCafeSealed {
+        return currentState
+    }
 }
