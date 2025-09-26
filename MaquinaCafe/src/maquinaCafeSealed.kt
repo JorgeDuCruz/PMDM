@@ -93,7 +93,7 @@ private fun MostrarOpciones() {
  */
 private fun pagar(precio : Double) {
     var dineroRecibido = 0.0
-    while (dineroRecibido <= precio) {
+    while (dineroRecibido < precio) {
         println("Introduce dinero (actual: \$$dineroRecibido dinero necesario: $precio): ")
         dineroRecibido += sc.nextDouble()
     }
