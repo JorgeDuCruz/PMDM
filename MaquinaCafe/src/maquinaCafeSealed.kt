@@ -62,7 +62,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
  * Permite al usuario elegir un café de las opciones disponibles.
  * Cambia el estado a `RecibiendoDinero` con el precio del café elegido.
  */
-fun ElegirCafe(listaPrecios: List<Double>,listaNombres: List<String>) {
+private fun ElegirCafe(listaPrecios: List<Double>,listaNombres: List<String>) {
     println("Elige una opción (1-4): ")
     val opcioElegida = sc.nextInt() - 1
     val precioCafe = listaPrecios[opcioElegida]
@@ -77,7 +77,7 @@ fun ElegirCafe(listaPrecios: List<Double>,listaNombres: List<String>) {
  * Muestra las opciones de café disponibles y sus precios.
  * Cambia el estado a `EligiendoCafe`.
  */
-fun MostrarOpciones() {
+private fun MostrarOpciones() {
     val tiposCafe = listOf("Espresso", "Latte", "Cappuccino", "Americano")
     val preciosCafe = listOf(2.00, 3.00, 3.50, 2.50)
     for (i in tiposCafe.indices) {
@@ -91,7 +91,7 @@ fun MostrarOpciones() {
 /**
  * Simula el proceso de pago. Cambia el estado a `HaciendoCafe` una vez que se recibe suficiente dinero.
  */
-fun pagar(precio : Double) {
+private fun pagar(precio : Double) {
     var dineroRecibido = 0.0
     while (dineroRecibido <= precio) {
         println("Introduce dinero (actual: \$$dineroRecibido dinero necesario: $precio): ")
@@ -105,7 +105,7 @@ fun pagar(precio : Double) {
 /**
  * Simula la recolección del café. Cambia el estado a `LimpiandoMaquina` y luego a `Idle`.
  */
-fun recogerCafe() {
+private fun recogerCafe() {
     println("Cafe recogido")
     maquinaCafe.setState(maquinaCafeSealed.LimpiandoMaquina)
     clean()
@@ -115,7 +115,7 @@ fun recogerCafe() {
 /**
  * Simula la limpieza de la máquina de café. Cambia el estado a `Idle` al finalizar.
  */
-fun clean() {
+private fun clean() {
     println("Limpiando la máquina...")
     maquinaCafe.setState(maquinaCafeSealed.Idle)
 }
@@ -124,7 +124,7 @@ fun clean() {
 /**
  * Cancela la compra actual y cambia el estado a `Idle`.
  */
-fun CancelarCompra() {
+private fun CancelarCompra() {
     println("Compra cancelada. Volviendo a estado Idle.")
     maquinaCafe.setState(maquinaCafeSealed.Idle)
 }
