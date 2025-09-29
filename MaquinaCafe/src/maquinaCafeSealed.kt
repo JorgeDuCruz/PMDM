@@ -23,7 +23,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
                 val recoger = maquinaCafe.sc.next()
                 if ("s" == recoger.lowercase()) {
                     hecho=false // Reset hecho for next time
-                    recogerCafe()
+                    RecogerCafe()
                 }
             }
         }
@@ -34,7 +34,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             val dineroSuficiente = maquinaCafe.sc.next()
             println("¿Dinero suficiente? $dineroSuficiente")
             if ("s" == dineroSuficiente.lowercase()) {
-                pagar(dinero)
+                Pagar(dinero)
             } else {
                 CancelarCompra()
             }
@@ -54,6 +54,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
     object LimpiandoMaquina : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Limpiando maquina")
+            Clean()
         }
     }
 }
@@ -91,7 +92,7 @@ private fun MostrarOpciones() {
 /**
  * Simula el proceso de pago. Cambia el estado a `HaciendoCafe` una vez que se recibe suficiente dinero.
  */
-private fun pagar(precio : Double) {
+private fun Pagar(precio : Double) {
     var dineroRecibido = 0.0
     while (dineroRecibido < precio) {
         println("Introduce dinero (actual: \$$dineroRecibido dinero necesario: $precio): ")
@@ -105,17 +106,17 @@ private fun pagar(precio : Double) {
 /**
  * Simula la recolección del café. Cambia el estado a `LimpiandoMaquina` y luego a `Idle`.
  */
-private fun recogerCafe() {
+private fun RecogerCafe() {
     println("Cafe recogido")
     maquinaCafe.setState(maquinaCafeSealed.LimpiandoMaquina)
-    clean()
+    Clean()
 }
 
 
 /**
  * Simula la limpieza de la máquina de café. Cambia el estado a `Idle` al finalizar.
  */
-private fun clean() {
+private fun Clean() {
     println("Limpiando la máquina...")
     maquinaCafe.setState(maquinaCafeSealed.Idle)
 }
