@@ -21,7 +21,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             } else {
                 println("Café listo. ¿Lo recoges? [s/n]")
                 val recoger = maquinaCafe.sc.next()
-                if ("s" == recoger.lowercase()) {
+                if (recoger.lowercase().contains("s")) {
                     hecho=false // Reset hecho for next time
                     RecogerCafe()
                 }
@@ -33,7 +33,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             println("Tienes suficiente dinero? [s/n]")
             val dineroSuficiente = maquinaCafe.sc.next()
             println("¿Dinero suficiente? $dineroSuficiente")
-            if ("s" == dineroSuficiente.lowercase()) {
+            if (dineroSuficiente.lowercase().contains("s")) {
                 Pagar(dinero)
             } else {
                 CancelarCompra()
@@ -44,7 +44,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Te gustan las opciones? [s/n]")
             val gustanOpcion = maquinaCafe.sc.next()
-            if ("s" == gustanOpcion.lowercase()) {
+            if (gustanOpcion.lowercase().contains("s")) {
                 ElegirCafe(precio,tipoCafe)
             } else {
                 CancelarCompra()
