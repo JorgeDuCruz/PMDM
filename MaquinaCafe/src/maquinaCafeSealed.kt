@@ -18,6 +18,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
                 Thread.sleep(200)
                 println("Cafe hecho")
                 hecho = true
+                maquinaCafe.ActualizarEstado()
             } else {
                 println("Café listo. ¿Lo recoges? [s/n]")
                 val recoger = maquinaCafe.sc.next()
@@ -32,7 +33,6 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Tienes suficiente dinero? [s/n]")
             val dineroSuficiente = maquinaCafe.sc.next()
-            println("¿Dinero suficiente? $dineroSuficiente")
             if (dineroSuficiente.lowercase().contains("s")) {
                 Pagar(dinero)
             } else {
@@ -64,12 +64,18 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
  * Cambia el estado a `RecibiendoDinero` con el precio del café elegido.
  */
 private fun ElegirCafe(listaPrecios: List<Double>,listaNombres: List<String>) {
-    println("Elige una opción (1-4): ")
-    val opcioElegida = sc.nextInt() - 1
-    val precioCafe = listaPrecios[opcioElegida]
-    val nombreCafe = listaNombres[opcioElegida]
-    println("Café elegido: $nombreCafe - Precio: $precioCafe €")
-    maquinaCafe.setState(maquinaCafeSealed.RecibiendoDinero(precioCafe))
+    println("Elige una opción (1-"+listaPrecios.size+"/ otro numero cancela la compra): ")
+    var opcioElegida = sc.nextInt()
+    if (opcioElegida<1 || opcioElegida>listaPrecios.size){
+        CancelarCompra()
+    }
+    else {
+        opcioElegida = opcioElegida-1 // Para acomodar la opcion a los indices de un array
+        val precioCafe = listaPrecios[opcioElegida]
+        val nombreCafe = listaNombres[opcioElegida]
+        println("Café elegido: $nombreCafe - Precio: $precioCafe €")
+        maquinaCafe.setState(maquinaCafeSealed.RecibiendoDinero(precioCafe))
+    }
 }
 
 
