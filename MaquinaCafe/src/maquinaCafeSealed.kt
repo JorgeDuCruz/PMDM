@@ -13,7 +13,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
     object HaciendoCafe : maquinaCafeSealed(){
         var hecho = false // Variable para rastrear si el café ya está hecho
         override fun onEnter(maquinaCafe: maquinaCafe) {
-            if (!hecho) {
+            if (!hecho) { // Comprueba si el cafe necesita ser hecho o no
                 println("Haciendo cafe")
                 Thread.sleep(200)
                 println("Cafe hecho")
@@ -23,7 +23,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
                 println("Café listo. ¿Lo recoges? [s/n]")
                 val recoger = maquinaCafe.sc.next()
                 if (recoger.lowercase().contains("s")) {
-                    hecho=false // Reset hecho for next time
+                    hecho=false // Resetea hecho para la siguiente iteracion
                     RecogerCafe()
                 }
             }
@@ -66,7 +66,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
 private fun ElegirCafe(listaPrecios: List<Double>,listaNombres: List<String>) {
     println("Elige una opción (1-"+listaPrecios.size+"/ otro numero cancela la compra): ")
     var opcioElegida = sc.nextInt()
-    if (opcioElegida<1 || opcioElegida>listaPrecios.size){
+    if (opcioElegida<1 || opcioElegida>listaPrecios.size){ // Si elige un numero que no es una opcion entoces cancela la compra
         CancelarCompra()
     }
     else {
@@ -85,9 +85,9 @@ private fun ElegirCafe(listaPrecios: List<Double>,listaNombres: List<String>) {
  * Cambia el estado a `EligiendoCafe`.
  */
 private fun MostrarOpciones() {
-    val tiposCafe = listOf("Espresso", "Latte", "Cappuccino", "Americano")
-    val preciosCafe = listOf(2.00, 3.00, 3.50, 2.50)
-    for (i in tiposCafe.indices) {
+    val tiposCafe = listOf("Espresso", "Latte", "Cappuccino", "Americano") // Opciones disponibles
+    val preciosCafe = listOf(2.00, 3.00, 3.50, 2.50) //Precio de cada opcion
+    for (i in tiposCafe.indices) { // For para mostrar las distintas opciones con sus precios
         println("${i + 1}. ${tiposCafe[i]} - \$${preciosCafe[i]}")
     }
     maquinaCafe.setState(maquinaCafeSealed.EligiendoCafe(tiposCafe, preciosCafe))
@@ -100,7 +100,7 @@ private fun MostrarOpciones() {
  */
 private fun Pagar(precio : Double) {
     var dineroRecibido = 0.0
-    while (dineroRecibido < precio) {
+    while (dineroRecibido < precio) { // hasta que pages no se hace el cafe. No te devuelve extra porque no es necesario
         println("Introduce dinero (actual: \$$dineroRecibido dinero necesario: $precio): ")
         dineroRecibido += sc.nextDouble()
     }
@@ -130,6 +130,7 @@ private fun Clean() {
 
 /**
  * Cancela la compra actual y cambia el estado a `Idle`.
+ * Actualmente esto termina la ejecucion
  */
 private fun CancelarCompra() {
     println("Compra cancelada. Volviendo a estado Idle.")
