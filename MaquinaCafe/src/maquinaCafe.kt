@@ -11,7 +11,9 @@ object maquinaCafe {
     fun setState(newState: maquinaCafeSealed) {
         if (esTransicionValida(currentState, newState)) {
             currentState = newState
-            ActualizarEstado()
+            if (!(currentState == maquinaCafeSealed.Idle)){ // Si vuelve al estado Idle termina la ejecucion para no estar con un bucle infinito
+                ActualizarEstado()
+            }
         } else {
             println("Transición inválida de $currentState a $newState")
         }
