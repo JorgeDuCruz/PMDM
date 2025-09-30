@@ -12,4 +12,3 @@ stateDiagram-v2
     RecibiendoDinero --> HaciendoCafe: Pagar(precio)
     HaciendoCafe --> LimpiandoMaquina: RecogerCafe()
     LimpiandoMaquina --> Idle:Clean()
-    Idle --> [*]:Si vuelve a Idle
