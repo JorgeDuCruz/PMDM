@@ -18,7 +18,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
                 Thread.sleep(200)
                 println("Cafe hecho")
                 hecho = true
-                maquinaCafe.ActualizarEstado()
+                //maquinaCafe.ActualizarEstado()
             } else {
                 println("Café listo. ¿Lo recoges? [s/n]")
                 val recoger = maquinaCafe.sc.next()
@@ -115,7 +115,6 @@ private fun Pagar(precio : Double) {
 private fun RecogerCafe() {
     println("Cafe recogido")
     maquinaCafe.setState(maquinaCafeSealed.LimpiandoMaquina)
-    Clean()
 }
 
 
