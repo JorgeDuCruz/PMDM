@@ -5,6 +5,9 @@ interface ICoffeeMachineState {
 }
 sealed class maquinaCafeSealed:ICoffeeMachineState {
 
+    /**
+     * Estado donde muestra las opciones
+     */
     object Idle : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Máquina encendida. Empezando a hacer café...")
@@ -12,6 +15,9 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
         }
     }
 
+    /**
+     * Estado donde se esta haciendo el cafe. Espera su recojida
+     */
     object HaciendoCafe : maquinaCafeSealed(){
         var hecho = false // Variable para rastrear si el café ya está hecho
         override fun onEnter(maquinaCafe: maquinaCafe) {
@@ -32,6 +38,9 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
         }
     }
 
+    /**
+     * Estado que recibe el dinero, guarda el precio del cafe elegido
+     */
     data class RecibiendoDinero(val dinero: Double) : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Tienes suficiente dinero? [s/n]")
@@ -44,6 +53,9 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
         }
     }
 
+    /**
+     * Estado donde se esta eligiendo un cafe. Guarda una lista con cafes disponibles y una lisa con los precios de cada cafe
+     */
     data class EligiendoCafe(val tipoCafe: List<String>, val precio: List<Double>) : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Te gustan las opciones? [s/n]")
@@ -56,6 +68,9 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
         }
     }
 
+    /**
+     * Estado donde se limpia la maquina
+     */
     object LimpiandoMaquina : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Limpiando maquina")
