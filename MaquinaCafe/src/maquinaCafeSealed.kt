@@ -4,12 +4,14 @@ interface ICoffeeMachineState {
     fun onEnter(maquinaCafe: maquinaCafe)
 }
 sealed class maquinaCafeSealed:ICoffeeMachineState {
+
     object Idle : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Máquina encendida. Empezando a hacer café...")
             MostrarOpciones()
         }
     }
+
     object HaciendoCafe : maquinaCafeSealed(){
         var hecho = false // Variable para rastrear si el café ya está hecho
         override fun onEnter(maquinaCafe: maquinaCafe) {
@@ -29,6 +31,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             }
         }
     }
+
     data class RecibiendoDinero(val dinero: Double) : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Tienes suficiente dinero? [s/n]")
@@ -40,6 +43,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             }
         }
     }
+
     data class EligiendoCafe(val tipoCafe: List<String>, val precio: List<Double>) : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Te gustan las opciones? [s/n]")
@@ -51,6 +55,7 @@ sealed class maquinaCafeSealed:ICoffeeMachineState {
             }
         }
     }
+
     object LimpiandoMaquina : maquinaCafeSealed(){
         override fun onEnter(maquinaCafe: maquinaCafe) {
             println("Limpiando maquina")
